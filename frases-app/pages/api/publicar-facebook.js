@@ -32,7 +32,7 @@ Reglas:
 
 function generarImagenUrl(frase) {
   return imagekit.url({
-    path: "/noche de estrellas.jpg",
+    path: "/fondo.jpg",
     transformation: [
       { width: 1080, height: 1080, cropMode: "extract", focus: "center" },
       { effectBrightness: -15 },
