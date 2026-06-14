@@ -1,15 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
-import ImageKit from "imagekit";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const PAGE_ID = process.env.FACEBOOK_PAGE_ID;
 const PAGE_TOKEN = process.env.FACEBOOK_PAGE_TOKEN;
-
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
-});
+const IK_ENDPOINT = process.env.IMAGEKIT_URL_ENDPOINT;
 
 async function generarFrase() {
   const categorias = ["desamor", "reflexion", "motivacional", "fe"];
@@ -31,34 +25,14 @@ Reglas:
 }
 
 function generarImagenUrl(frase) {
-  return imagekit.url({
-    path: "/fondo.jpg",
-    transformation: [
-      { width: 1080, height: 1080, cropMode: "extract", focus: "center" },
-      { effectBrightness: -15 },
-      {
-        overlay: "text",
-        overlayText: frase,
-        overlayTextFontSize: 52,
-        overlayTextColor: "F0E8D7",
-        overlayTextWidth: 820,
-        overlayTextAlign: "center",
-        overlayX: "mid",
-        overlayY: "mid",
-      },
-      {
-        overlay: "text",
-        overlayText: "A  L A S  3  A M",
-        overlayTextFontSize: 18,
-        overlayTextColor: "ffffff",
-        overlayAlpha: 25,
-        overlayX: "mid",
-        overlayY: "mid",
-        overlayYType: "pixels",
-        overlayYValue: 200,
-      },
-    ],
-  });
+  const texto = encodeURIComponent(frase);
+  const marca = encodeURIComponent("A  LAS  3  AM");
+  const tr = [
+    "w-1080,h-1080,c-maintain_ratio",
+    `l-text,i-${texto},fs-52,co-F0E8D7,lx-N50p,ly-N10p,la-center,l-end`,
+    `l-text,i-${marca},fs-16,co-FFFFFF,lx-N50p,ly-N40p,la-center,l-end`,
+  ].join(":");
+  return `${IK_ENDPOINT}/tr:${tr}/fondo.jpg`;
 }
 
 async function publicarEnFacebook(imageUrl, frase) {
