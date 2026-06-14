@@ -1,14 +1,14 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { v2 as cloudinary } from "cloudinary";
+import ImageKit from "imagekit";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const PAGE_ID = process.env.FACEBOOK_PAGE_ID;
 const PAGE_TOKEN = process.env.FACEBOOK_PAGE_TOKEN;
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
 async function generarFrase() {
@@ -30,43 +30,35 @@ Reglas:
   return message.content[0].text.trim();
 }
 
-async function generarImagenUrl(frase) {
-  const fraseEncoded = encodeURIComponent(frase);
-  const url = cloudinary.url("noche_de_estrellas_r6gy6o", {
+function generarImagenUrl(frase) {
+  return imagekit.url({
+    path: "/noche de estrellas.jpg",
     transformation: [
-      { width: 1080, height: 1080, crop: "fill", gravity: "center" },
-      { effect: "brightness:-20" },
+      { width: 1080, height: 1080, cropMode: "extract", focus: "center" },
+      { effectBrightness: -15 },
       {
-        overlay: {
-          font_family: "Georgia",
-          font_size: 52,
-          font_weight: "bold",
-          text_align: "center",
-          text: fraseEncoded,
-        },
-        color: "#F0E8D7",
-        width: 820,
-        crop: "fit",
-        gravity: "center",
-        y: 0,
+        overlay: "text",
+        overlayText: frase,
+        overlayTextFontSize: 52,
+        overlayTextColor: "F0E8D7",
+        overlayTextWidth: 820,
+        overlayTextAlign: "center",
+        overlayX: "mid",
+        overlayY: "mid",
       },
       {
-        overlay: {
-          font_family: "Georgia",
-          font_size: 18,
-          text: "A  L A S  3  A M",
-          letter_spacing: 6,
-        },
-        color: "#ffffff",
-        opacity: 25,
-        gravity: "center",
-        y: 200,
+        overlay: "text",
+        overlayText: "A  L A S  3  A M",
+        overlayTextFontSize: 18,
+        overlayTextColor: "ffffff",
+        overlayAlpha: 25,
+        overlayX: "mid",
+        overlayY: "mid",
+        overlayYType: "pixels",
+        overlayYValue: 200,
       },
     ],
-    format: "jpg",
-    quality: 95,
   });
-  return url;
 }
 
 async function publicarEnFacebook(imageUrl, frase) {
@@ -89,7 +81,7 @@ export default async function handler(req, res) {
   }
   try {
     const frase = await generarFrase();
-    const imageUrl = await generarImagenUrl(frase);
+    const imageUrl = generarImagenUrl(frase);
     const resultado = await publicarEnFacebook(imageUrl, frase);
     if (resultado.error) {
       return res.status(500).json({ error: resultado.error.message, url: imageUrl });
