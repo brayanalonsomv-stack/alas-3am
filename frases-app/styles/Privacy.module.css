@@ -1,0 +1,51 @@
+.main {
+  min-height: 100vh;
+  background: #080808;
+  padding: 3rem 1rem 4rem;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.container h1 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #e8e0d0;
+  margin-bottom: 0.5rem;
+  font-family: Georgia, serif;
+}
+
+.fecha {
+  font-size: 13px;
+  color: #444;
+  margin-bottom: 2.5rem;
+  font-family: sans-serif;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+.container h2 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 0.5rem;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.container p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  font-family: Georgia, serif;
+}
+
+.container a {
+  color: #777;
+  text-decoration: underline;
+}
