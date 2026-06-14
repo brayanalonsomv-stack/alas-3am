@@ -17,10 +17,12 @@ async function generarFrase() {
   const prompt = `Genera UNA sola frase emocional en español para publicar en Facebook.
 Tema: ${cat}.
 Reglas:
-- Auténtica, profunda, viral
+- Auténtica, directa, como algo que diría una persona real en redes sociales
 - Máximo 12 palabras
 - Sin emojis
-- Estilo íntimo, como si lo escribiera una persona real
+- Nada poética ni literaria, como un pensamiento que se te viene a la cabeza a las 3am
+- Estilo conversacional, crudo, honesto
+- Ejemplos del estilo correcto: "Imagínate romperle el corazón a alguien que le pedía a Dios que te amara bien", "Hay personas que se van y te dejan con preguntas que nunca vas a poder hacerles"
 - Solo devuelve la frase, sin comillas ni explicaciones`;
   const message = await client.messages.create({
     model: "claude-sonnet-4-6",
