@@ -1,15 +1,15 @@
 {
   "crons": [
     {
-      "path": "/api/publicar-facebook?secret=TU_CRON_SECRET",
+      "path": "/api/publicar-facebook?secret=alas3am2024",
       "schedule": "0 14 * * *"
     },
     {
-      "path": "/api/publicar-facebook?secret=TU_CRON_SECRET",
+      "path": "/api/publicar-facebook?secret=alas3am2024",
       "schedule": "0 20 * * *"
     },
     {
-      "path": "/api/publicar-facebook?secret=TU_CRON_SECRET",
+      "path": "/api/publicar-facebook?secret=alas3am2024",
       "schedule": "0 3 * * *"
     }
   ]
